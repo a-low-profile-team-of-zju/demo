@@ -124,15 +124,15 @@ void drawRoundedRec(rRectangleNode roundedRecHead)
 			{
 				if (tmp->data.fillFlag) StartFilledRegion(1);
 				/*╩╜╠ъ©Р*/
-				MovePen(tmp->data.startX + width / 6, tmp->data.startY);
-				DrawLine(width * 2 / 3, 0);
-				DrawEllipticalArc(width / 6, height / 6, -90, -270);
-				DrawLine(0, height * 2 / 3);
-				DrawEllipticalArc(width / 6, height / 6, 0, -270);
+				MovePen(tmp->data.startX + width *5 / 6, tmp->data.startY);
 				DrawLine(-width * 2 / 3, 0);
-				DrawEllipticalArc(width / 6, height / 6, 90, -270);
+				DrawEllipticalArc(width / 6, -height / 6, 90, 90);
+				DrawLine(0, height * 2 / 3);
+				DrawEllipticalArc(width / 6, -height / 6, 180, 90);
+				DrawLine(width * 2 / 3, 0);
+				DrawEllipticalArc(width / 6, -height / 6, 270, 90);
 				DrawLine(0, -height * 2 / 3);
-				DrawEllipticalArc(width / 6, height / 6, 180, -270);
+				DrawEllipticalArc(width / 6, -height / 6, 360, 90);
 				if (tmp->data.fillFlag) EndFilledRegion();
 
 				/*п╢нд╠╬*/
