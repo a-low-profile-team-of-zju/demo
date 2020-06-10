@@ -188,7 +188,24 @@ void initMenu(void)
 	selection = menuList(GenUIID(0), 0 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListFile[2]) * 1.5, menuHeight, lang ? menuListFile : menuListCFile, sizeof(menuListFile) / sizeof(menuListFile[0]));
 	if (selection == 1)
 	{
-		/*"New  | Ctrl-N"的功能*/
+		/*保存后，统统初始化！*/
+		save();
+		char lpFileName[MAX_PATH];/*代码来源https://zhidao.baidu.com/question/518459589225069325.html*/
+		GetModuleFileName(NULL, lpFileName, MAX_PATH);
+		// 运行新的自身
+		SHELLEXECUTEINFO ShExecInfo;
+		ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+		ShExecInfo.fMask = NULL;
+		ShExecInfo.hwnd = NULL;
+		ShExecInfo.lpVerb = NULL;
+		ShExecInfo.lpFile = lpFileName; // 执行的程序名
+		ShExecInfo.lpParameters = NULL;
+		ShExecInfo.lpDirectory = NULL;
+		ShExecInfo.nShow = SW_NORMAL;
+		ShExecInfo.hInstApp = NULL;
+		ShellExecuteEx(&ShExecInfo);
+		//关闭自身
+		exit(0);
 	}
 	else if (selection == 2)
 	{
@@ -209,7 +226,14 @@ void initMenu(void)
 	}
 	else if (selection == 5)
 	{
-		exit(0);
+		if (MessageBox(NULL, lang ? "Need save the file?" : "需要保存当前文件吗？", 
+			lang ? "Attention" : "注意", MB_YESNO | MB_ICONQUESTION) == IDYES)/*调用了系统api，生成一个对话框*/
+		{
+			isSaveAs = TRUE;
+			save();		
+		}
+		else
+			exit(0);
 	}
 	else if (selection == 6)
 	{
