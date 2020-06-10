@@ -36,6 +36,7 @@ void initMenu(void)
 		"New  | Ctrl-N",
 		"Open | Ctrl-O",
 		"Save | Ctrl-S",
+		"Save as",
 		"Close",
 		"Exit"
 	};
@@ -106,11 +107,12 @@ void initMenu(void)
 
 	/*----------------------------------------------------------------------------------中文菜单--------------------------------------------------------------------------------*/
 	static char* menuListCFile[] = { "文件",
-	"新建  | Ctrl-N",
-	"打开 | Ctrl-O",
-	"保存 | Ctrl-S",
-	"关闭",
-	"退出"
+		"新建  | Ctrl-N",
+		"打开 | Ctrl-O",
+		"保存 | Ctrl-S",
+		"另存为",
+		"关闭",
+		"退出"
 	};
 	static char* menuListCEdit[] = { "编辑",
 		"剪切    | Ctrl-X",
@@ -195,14 +197,21 @@ void initMenu(void)
 	}
 	else if (selection == 3)
 	{
+		isSaveAs = FALSE;
 		save();
 		display();
 	}
 	else if (selection == 4)
 	{
-		exit(0);
+		isSaveAs = TRUE;
+		save();
+		display();
 	}
 	else if (selection == 5)
+	{
+		exit(0);
+	}
+	else if (selection == 6)
 	{
 		exit(0);
 	}
@@ -291,7 +300,7 @@ void initMenu(void)
 	}
 	else if (selection == 2)
 	{
-		/*"More info"的功能*/
+		ShellExecute(NULL, "open", "https://github.com/a-low-profile-team-of-zju/demo", NULL, NULL, SW_HIDE);/*导向我们的GitHub项目页*/
 	}
 	else if (selection == 3)
 	{

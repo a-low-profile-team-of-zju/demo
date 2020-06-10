@@ -1041,10 +1041,11 @@ void open(void)
 	ofn.nMaxFile = MAX_PATH;
 	ofn.Flags = OFN_FILEMUSTEXIST;
 	int type;/*用来判断读入的图形类型*/
-
-	if (GetOpenFileName(&ofn))/*openFile里被赋值为了所选文件的地址*/
+	GetOpenFileName(&ofn);
+	if (strlen(openFile))/*openFile里被赋值为了所选文件的地址*/
 	{
 		FILE* fp = fopen(openFile, "r");
+		strcpy(savedFile,openFile);
 		fscanf(fp, "%d", &type);
 		while (type != 0)
 		{
@@ -1059,12 +1060,9 @@ void open(void)
 				fscanf(fp, "%lf", &(tmp1->data.endY));
 				fscanf(fp, "%d", &(tmp1->data.fillFlag));
 				fscanf(fp, "%d\n", &(tmp1->data.penSize));/*加一个\n来消除缓冲区里的\n，防止对fgets操作产生影响，下同*/
-				fgets(tmp1->data.fillColor, 15, fp);
-				tmp1->data.fillColor[strlen(tmp1->data.fillColor) - 1] = 0;/*把最后的\n变为\0结束符，下同*/
-				fgets(tmp1->data.textColor, 15, fp);
-				tmp1->data.textColor[strlen(tmp1->data.textColor) - 1] = 0;
-				fgets(tmp1->data.text, 101, fp);
-				tmp1->data.text[strlen(tmp1->data.text) - 1] = 0;
+				fgets(tmp1->data.fillColor, 15, fp);tmp1->data.fillColor[strlen(tmp1->data.fillColor) - 1] = 0;/*把最后的\n变为\0结束符，下同*/
+				fgets(tmp1->data.textColor, 15, fp);tmp1->data.textColor[strlen(tmp1->data.textColor) - 1] = 0;
+				fgets(tmp1->data.text, 101, fp);tmp1->data.text[strlen(tmp1->data.text) - 1] = 0;
 
 				tmp1->pNext = NULL;
 
@@ -1086,12 +1084,9 @@ void open(void)
 				fscanf(fp, "%lf", &tmp2->data.endY);
 				fscanf(fp, "%d", &tmp2->data.fillFlag);
 				fscanf(fp, "%d\n", &tmp2->data.penSize);
-				fgets(tmp2->data.fillColor, 15, fp);
-				tmp2->data.fillColor[strlen(tmp2->data.fillColor) - 1] = 0;
-				fgets(tmp2->data.textColor, 15, fp);
-				tmp2->data.textColor[strlen(tmp2->data.textColor) - 1] = 0;
-				fgets(tmp2->data.text, 101, fp);
-				tmp2->data.text[strlen(tmp2->data.text) - 1] = 0;
+				fgets(tmp2->data.fillColor, 15, fp);tmp2->data.fillColor[strlen(tmp2->data.fillColor) - 1] = 0;
+				fgets(tmp2->data.textColor, 15, fp);tmp2->data.textColor[strlen(tmp2->data.textColor) - 1] = 0;
+				fgets(tmp2->data.text, 101, fp);tmp2->data.text[strlen(tmp2->data.text) - 1] = 0;
 
 				tmp2->pNext = NULL;
 
@@ -1113,12 +1108,9 @@ void open(void)
 				fscanf(fp, "%lf", &tmp3->data.endY);
 				fscanf(fp, "%d", &tmp3->data.fillFlag);
 				fscanf(fp, "%d\n", &tmp3->data.penSize);
-				fgets(tmp3->data.fillColor, 15, fp);
-				tmp3->data.fillColor[strlen(tmp3->data.fillColor) - 1] = 0;
-				fgets(tmp3->data.textColor, 15, fp);
-				tmp3->data.textColor[strlen(tmp3->data.textColor) - 1] = 0;
-				fgets(tmp3->data.text, 101, fp);
-				tmp3->data.text[strlen(tmp3->data.text) - 1] = 0;
+				fgets(tmp3->data.fillColor, 15, fp);tmp3->data.fillColor[strlen(tmp3->data.fillColor) - 1] = 0;
+				fgets(tmp3->data.textColor, 15, fp);tmp3->data.textColor[strlen(tmp3->data.textColor) - 1] = 0;
+				fgets(tmp3->data.text, 101, fp);tmp3->data.text[strlen(tmp3->data.text) - 1] = 0;
 								
 				tmp3->pNext = NULL;
 
@@ -1203,12 +1195,10 @@ void open(void)
 				fscanf(fp, "%lf", &tmp7->data.endY);
 				fscanf(fp, "%d", &tmp7->data.fillFlag);
 				fscanf(fp, "%d\n", &tmp7->data.penSize);
-				fgets(tmp7->data.fillColor, 15, fp);
-				tmp7->data.fillColor[strlen(tmp7->data.fillColor) - 1] = 0;
-				fgets(tmp7->data.textColor, 15, fp);
-				tmp7->data.textColor[strlen(tmp7->data.textColor) - 1] = 0;
-				fgets(tmp7->data.text, 101, fp);
-				tmp7->data.text[strlen(tmp7->data.text) - 1] = 0;
+				fgets(tmp7->data.fillColor, 15, fp);tmp7->data.fillColor[strlen(tmp7->data.fillColor) - 1] = 0;
+				fgets(tmp7->data.textColor, 15, fp);tmp7->data.textColor[strlen(tmp7->data.textColor) - 1] = 0;
+				fgets(tmp7->data.text, 101, fp);tmp7->data.text[strlen(tmp7->data.text) - 1] = 0;
+				
 
 				tmp7->pNext = NULL;
 
@@ -1229,12 +1219,9 @@ void open(void)
 				fscanf(fp, "%lf", &tmp8->data.radius);
 				fscanf(fp, "%d", &tmp8->data.fillFlag);
 				fscanf(fp, "%d\n", &tmp8->data.penSize);
-				fgets(tmp8->data.fillColor, 15, fp);
-				tmp8->data.fillColor[strlen(tmp8->data.fillColor) - 1] = 0;
-				fgets(tmp8->data.textColor, 15, fp);
-				tmp8->data.textColor[strlen(tmp8->data.textColor) - 1] = 0;
-				fgets(tmp8->data.text, 101, fp);
-				tmp8->data.text[strlen(tmp8->data.text) - 1] = 0;
+				fgets(tmp8->data.fillColor, 15, fp);tmp8->data.fillColor[strlen(tmp8->data.fillColor) - 1] = 0;
+				fgets(tmp8->data.textColor, 15, fp);tmp8->data.textColor[strlen(tmp8->data.textColor) - 1] = 0;
+				fgets(tmp8->data.text, 101, fp);tmp8->data.text[strlen(tmp8->data.text) - 1] = 0;
 				
 				tmp8->pNext = NULL;
 
@@ -1256,12 +1243,9 @@ void open(void)
 				fscanf(fp, "%lf", &tmp9->data.yRadius);
 				fscanf(fp, "%d", &tmp9->data.fillFlag);
 				fscanf(fp, "%d\n", &tmp9->data.penSize);
-				fgets(tmp9->data.fillColor, 15, fp);
-				tmp9->data.fillColor[strlen(tmp9->data.fillColor) - 1] = 0;
-				fgets(tmp9->data.textColor, 15, fp);
-				tmp9->data.textColor[strlen(tmp9->data.textColor) - 1] = 0;
-				fgets(tmp9->data.text, 101, fp);
-				tmp9->data.text[strlen(tmp9->data.text) - 1] = 0;
+				fgets(tmp9->data.fillColor, 15, fp);tmp9->data.fillColor[strlen(tmp9->data.fillColor) - 1] = 0;
+				fgets(tmp9->data.textColor, 15, fp);tmp9->data.textColor[strlen(tmp9->data.textColor) - 1] = 0;
+				fgets(tmp9->data.text, 101, fp);tmp9->data.text[strlen(tmp9->data.text) - 1] = 0;
 
 				tmp9->pNext = NULL;
 
@@ -1294,9 +1278,16 @@ void save(void)
 	ofn.lpstrFile = (LPWSTR)saveFile;
 	ofn.nMaxFile = MAX_PATH;
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-	if (GetSaveFileName(&ofn))/*saveFile里被赋值为了保存的文件的地址*/
+	if (strlen(savedFile) == 0 || isSaveAs == TRUE) GetSaveFileName(&ofn);
+	else strcpy(saveFile, savedFile);
+	if (strlen(saveFile))/*saveFile里被赋值为了保存的文件的地址*/
 	{
-		FILE* fp = fopen(strcat(saveFile,".txt"), "w+");/*先新建再读写*/
+		FILE* fp;
+		if(strcmp(saveFile+strlen(saveFile)-4,".txt"))/*放置重复添加后缀名*/
+			fp = fopen(strcat(saveFile, ".txt"), "w+");/*先新建再读写*/
+		else
+			fp = fopen(saveFile, "w+");
+		strcpy(savedFile, saveFile);
 
 		/*写矩形*/
 		rectangleNode tmp1 = rectangleHead;
@@ -1398,5 +1389,7 @@ void save(void)
 		free(tmp9);
 
 		fprintf(fp, "%d", 0);/*表示结束*/
+
+		fclose(fp);
 	}
 }

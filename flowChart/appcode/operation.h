@@ -6,6 +6,10 @@
 void* selectedGraph;/*用来表示被选中的图形的节点*/
 void* copyGraph;/*用来表示被复制或被剪切的图形的节点*/
 
+//static FILE* openedFile;/*记录当前打开的文件*/
+static char savedFile[MAX_PATH];/*记录上一个保存过的文件*/
+bool isSaveAs;/*用来判断是否选择另存为*/
+
 /*用来根据当前鼠标位置选择图形，返回值为1时表示选中，反之则无
 注意，这个遍历方法会使得选中图形时具有优先级，矩形优先级最大，椭圆最小*/
 int selectGraph(double x, double y);
