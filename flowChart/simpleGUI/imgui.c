@@ -23,6 +23,7 @@
 #include "extgraph.h"
 #include "genlib.h"
 #include "simpio.h"
+#include "conio.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -275,7 +276,7 @@ int button(int id, double x, double y, double w, double h, char *label)
 {
 	char * frameColor = gs_button_color.frame;
 	char * labelColor = gs_button_color.label;
-	double movement = 0.0*h;
+	double movement = 0.2*h;
 	double shrink = 0.15*h;
 	double sinkx = 0, sinky = 0;
 	//int isHotItem = 0;
@@ -321,7 +322,7 @@ int button(int id, double x, double y, double w, double h, char *label)
 	drawBox(x+sinkx, y+sinky, w, h, gs_button_color.fillflag,
 		label, 'C', labelColor);
 	if( gs_button_color.fillflag ) {
-		mySetPenColor( "Black" );
+		mySetPenColor( labelColor );
 		drawRectangle(x+sinkx, y+sinky, w, h, 0);
 	}
 
@@ -372,10 +373,6 @@ static int menuItem(int id, double x, double y, double w, double h, char *label)
 
 	mySetPenColor(frameColor);
 	drawBox(x, y, w, h, gs_menu_color.fillflag, label, 'L', labelColor);
-	if (gs_button_color.fillflag) {
-		mySetPenColor("Black");
-		drawRectangle(x , y , w, h, 0);
-	}
 
 	if( gs_UIState.clickedItem==id && // must be clicked before
 		! gs_UIState.mousedown )     // but now mouse button is up
@@ -480,10 +477,6 @@ void drawMenuBar(double x, double y, double w, double h)
 {
 	mySetPenColor(gs_menu_color.frame);
 	drawRectangle(x,y,w,h,gs_menu_color.fillflag);
-	if (gs_button_color.fillflag) {
-		mySetPenColor("Black");
-		drawRectangle(x , y , w, h, 0);
-	}
 }
 
 
@@ -513,6 +506,7 @@ int textbox(int id, double x, double y, double w, double h, char textbuf[], int 
 	char * labelColor = gs_textbox_color.label;
 	int textChanged = 0;
 	int len = strlen(textbuf);
+	//int tmpLen;
 	double indent = GetFontAscent()/2;
 	double textPosY = y+h/2-GetFontAscent()/2;
 
@@ -537,10 +531,6 @@ int textbox(int id, double x, double y, double w, double h, char textbuf[], int 
 	// Render the text box
 	mySetPenColor(frameColor);
 	drawRectangle(x, y, w, h, gs_textbox_color.fillflag);
-	if (gs_button_color.fillflag) {
-		mySetPenColor("Black");
-		drawRectangle(x , y , w, h, 0);
-	}
 	// show text
 	mySetPenColor(labelColor);
 	MovePen(x+indent, textPosY);
@@ -549,7 +539,7 @@ int textbox(int id, double x, double y, double w, double h, char textbuf[], int 
 	if ( gs_UIState.kbdItem == id && (clock() >> 8) & 1) 
 	{
 		//MovePen(x+indent+TextStringWidth(textbuf), textPosY);
-		DrawTextString("_");
+		DrawTextString("|");
 	}
 
 	// If we have keyboard focus, we'll need to process the keys
@@ -558,6 +548,7 @@ int textbox(int id, double x, double y, double w, double h, char textbuf[], int 
 		switch (gs_UIState.keyPress)
 		{
 		case VK_RETURN:
+			break;
 		case VK_TAB:
 			// lose keyboard focus.
 			gs_UIState.kbdItem = 0;
@@ -570,16 +561,33 @@ int textbox(int id, double x, double y, double w, double h, char textbuf[], int 
 			break;
 		case VK_BACK:
 			if( len > 0 ) {
-				textbuf[--len] = 0;
-				textChanged = 1;
+				if (textbuf[len-1] >= 32 && textbuf[len-1] < 127)
+				{
+					textbuf[--len] = 0;
+					textChanged = 1;
+				}
+				else/*一次删两个char*/
+				{
+					textbuf[--len] = 0;
+					textbuf[--len] = 0;
+					textChanged = 1;
+				}
 			}
 			gs_UIState.keyPress = 0;
 			break;
 		}
 		// char input
-		if (gs_UIState.charInput >= 32 && gs_UIState.charInput < 127 && len+1 < buflen ) {
+		if (gs_UIState.charInput >= 32 && gs_UIState.charInput < 127 && len + 1 < buflen) {
 			textbuf[len] = gs_UIState.charInput;
 			textbuf[++len] = 0;
+			gs_UIState.charInput = 0;
+			textChanged = 1;
+		}
+		/*支持了中文输入*/
+		else if (gs_UIState.charInput < 0 && len + 1 < buflen) {
+			textbuf[len] = gs_UIState.charInput;
+			//textbuf[++len] = 0;
+			len += 2;
 			gs_UIState.charInput = 0;
 			textChanged = 1;
 		}
@@ -616,7 +624,7 @@ void drawRectangle(double x, double y, double w, double h, int fillflag)
 void drawBox(double x, double y, double w, double h, int fillflag, char *label, char labelAlignment, char *labelColor)
 {
 	double fa = GetFontAscent();
-	// rect
+	// data
 	drawRectangle(x,y,w,h,fillflag);
 	// text
 	if( label && strlen(label)>0 ) {

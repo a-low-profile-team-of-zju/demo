@@ -398,5 +398,6 @@ void initButtomBar(void)
 				break;
 			}
 		}
+		display();
 	}
 }

@@ -12,6 +12,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <conio.h>
 #include <windows.h>
 #include <time.h>
 #include <wincon.h>
@@ -1071,10 +1072,16 @@ static LONG FAR PASCAL GraphicsEventProc(HWND hwnd, UINT msg,
 {
     switch(msg)
     {
+		// 刘新国：使用了double buffer, 手动清屏，
+		//         忽略擦除背景消息，避免闪烁
+		//         感谢18级石蒙同学，提供这个方法解决刷新闪烁问题
+		case WM_ERASEBKGND: 
+			return 0; 
+
         case WM_PAINT:
              DoUpdate();
              return 0;
-             
+
         case WM_CHAR:
     		if (g_char != NULL)
     			g_char((char) wParam);
@@ -1156,6 +1163,7 @@ static LONG FAR PASCAL GraphicsEventProc(HWND hwnd, UINT msg,
         case WM_DESTROY:
             PostQuitMessage(0);
             return 0;   
+
         default:
             return DefWindowProc(hwnd, msg, wParam, lParam);
     }                                     
@@ -1212,7 +1220,6 @@ static void CheckEvents(void)
 static void DoUpdate(void)
 {
     HDC dc;
-
     dc = BeginPaint(graphicsWindow, &ps);
     BitBlt(dc, 0, 0, pixelWidth, pixelHeight, osdc, 0, 0, SRCCOPY);
     EndPaint(graphicsWindow, &ps);
@@ -1231,7 +1238,7 @@ void DisplayClear(void)
 
     SetRect(&r, 0, 0, pixelWidth, pixelHeight);
     InvalidateRect(graphicsWindow, &r, TRUE);
-    BitBlt(osdc, 0, 0, pixelWidth, pixelHeight, osdc, 0, 0, WHITENESS);
+    BitBlt(osdc, 0, 0, pixelWidth, pixelHeight, NULL, 0, 0, WHITENESS);
 }
 
 /*
@@ -1914,8 +1921,11 @@ static int Max(int x, int y)
 }
 
 
-int WINAPI WinMain (HINSTANCE hThisInstance,HINSTANCE hPrevInstance, \
-	                LPSTR lpszArgument,int nFunsterStil)
+int WINAPI WinMain (HINSTANCE hThisInstance,
+                    HINSTANCE hPrevInstance,
+                    LPSTR lpszArgument,
+                    int nFunsterStil)
+
 {
     MSG messages;            /* Here messages to the application are saved */
     

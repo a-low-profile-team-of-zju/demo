@@ -105,7 +105,6 @@ void uiGetChar(int ch);
 int button(int id, double x, double y, double w, double h, char *label);
 
 
-
 /* 
  * º¯ÊıÃû£ºmenuList
  *
