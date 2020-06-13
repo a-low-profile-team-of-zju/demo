@@ -104,8 +104,15 @@ int selectGraph(double x, double y)
 	{
 		double dx = tmp4->data.endX - tmp4->data.startX;
 		double dy = tmp4->data.endY - tmp4->data.startY;
-		if ((x - tmp4->data.startX) * (x - tmp4->data.endX) <= 0 &&
-			(y - dy / dx * (x - tmp4->data.startX) - tmp4->data.startY - 0.2) * (y - dy / dx * (x - tmp4->data.startX) - tmp4->data.startY + 0.2) <= 0)/*直线上下0.2（英寸）均为有效判定区域*/
+		if (tmp4->data.endX <= tmp4->data.startX + 0.2 && tmp4->data.endX >= tmp4->data.startX - 0.2 &&
+			(x - tmp4->data.endX - 0.2) * (x - tmp4->data.endX + 0.2) <= 0 && (y - tmp4->data.startY) * (y - tmp4->data.endY) <= 0)/*直线上下0.2（英寸）均为有效判定区域*/
+		{
+			type = 直线;
+			selectedGraph = tmp4;
+			return 1;
+		}
+		else if ((x - tmp4->data.startX) * (x - tmp4->data.endX) <= 0 &&
+			(y - dy / dx * (x - tmp4->data.startX) - tmp4->data.startY - 0.2) * (y - dy / dx * (x - tmp4->data.startX) - tmp4->data.startY + 0.2) <= 0)
 		{
 			type = 直线;
 			selectedGraph = tmp4;
@@ -122,8 +129,15 @@ int selectGraph(double x, double y)
 	{
 		double dx = tmp5->data.endX - tmp5->data.startX;
 		double dy = tmp5->data.endY - tmp5->data.startY;
-		if ((x - tmp5->data.startX) * (x - tmp5->data.endX) <= 0 &&
-			(y - dy / dx * (x - tmp5->data.startX) - tmp5->data.startY - 0.2) * (y - dy / dx * (x - tmp5->data.startX) - tmp5->data.startY + 0.2) <= 0)/*直线上下0.2（英寸）均为有效判定区域*/
+		if (tmp5->data.endX <= tmp5->data.startX + 0.2 && tmp5->data.endX >= tmp5->data.startX - 0.2 &&
+			(x - tmp5->data.endX - 0.2) * (x - tmp5->data.endX + 0.2) <= 0 && (y - tmp5->data.startY) * (y - tmp5->data.endY) <= 0)/*单向箭头上下0.2（英寸）均为有效判定区域*/
+		{
+			type = 单向箭头;
+			selectedGraph = tmp5;
+			return 1;
+		}
+		else if ((x - tmp5->data.startX) * (x - tmp5->data.endX) <= 0 &&
+			(y - dy / dx * (x - tmp5->data.startX) - tmp5->data.startY - 0.2) * (y - dy / dx * (x - tmp5->data.startX) - tmp5->data.startY + 0.2) <= 0)
 		{
 			type = 单向箭头;
 			selectedGraph = tmp5;
@@ -140,8 +154,15 @@ int selectGraph(double x, double y)
 	{
 		double dx = tmp6->data.endX - tmp6->data.startX;
 		double dy = tmp6->data.endY - tmp6->data.startY;
-		if ((x - tmp6->data.startX) * (x - tmp6->data.endX) <= 0 &&
-			(y - dy / dx * (x - tmp6->data.startX) - tmp6->data.startY - 0.2) * (y - dy / dx * (x - tmp6->data.startX) - tmp6->data.startY + 0.2) <= 0)/*直线上下0.2（英寸）均为有效判定区域*/
+		if (tmp6->data.endX <= tmp6->data.startX + 0.2 && tmp6->data.endX >= tmp6->data.startX - 0.2 &&
+			(x - tmp6->data.endX - 0.2) * (x - tmp6->data.endX + 0.2) <= 0 && (y - tmp6->data.startY) * (y - tmp6->data.endY) <= 0)/*双向箭头上下0.2（英寸）均为有效判定区域*/
+		{
+			type = 双向箭头;
+			selectedGraph = tmp6;
+			return 1;
+		}
+		else if ((x - tmp6->data.startX) * (x - tmp6->data.endX) <= 0 &&
+			(y - dy / dx * (x - tmp6->data.startX) - tmp6->data.startY - 0.2) * (y - dy / dx * (x - tmp6->data.startX) - tmp6->data.startY + 0.2) <= 0)
 		{
 			type = 双向箭头;
 			selectedGraph = tmp6;
@@ -402,38 +423,68 @@ void enlargeGraphicSize(void)
 		case 直线:
 			width = fabs(((lineNode)selectedGraph)->data.endX - ((lineNode)selectedGraph)->data.startX);
 			height = fabs(((lineNode)selectedGraph)->data.endY - ((lineNode)selectedGraph)->data.startY);
-			if (((lineNode)selectedGraph)->data.endX >= ((lineNode)selectedGraph)->data.startX)
-				((lineNode)selectedGraph)->data.endX += scaleUnit;
+			if (width != 0)
+			{
+				if (((lineNode)selectedGraph)->data.endX >= ((lineNode)selectedGraph)->data.startX)
+					((lineNode)selectedGraph)->data.endX += scaleUnit;
+				else
+					((lineNode)selectedGraph)->data.endX -= scaleUnit;
+				if (((lineNode)selectedGraph)->data.endY >= ((lineNode)selectedGraph)->data.startY)
+					((lineNode)selectedGraph)->data.endY += scaleUnit / width * height;
+				else
+					((lineNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+			}
 			else
-				((lineNode)selectedGraph)->data.endX -= scaleUnit;
-			if (((lineNode)selectedGraph)->data.endY >= ((lineNode)selectedGraph)->data.startY)
-				((lineNode)selectedGraph)->data.endY += scaleUnit / width * height;
-			else
-				((lineNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+			{
+				if (((lineNode)selectedGraph)->data.endY >= ((lineNode)selectedGraph)->data.startY)
+					((lineNode)selectedGraph)->data.endY += scaleUnit ;
+				else
+					((lineNode)selectedGraph)->data.endY -= scaleUnit ;
+			}
 			break;
 		case 单向箭头:
 			width = fabs(((arrowNode)selectedGraph)->data.endX - ((arrowNode)selectedGraph)->data.startX);
 			height = fabs(((arrowNode)selectedGraph)->data.endY - ((arrowNode)selectedGraph)->data.startY);
-			if (((arrowNode)selectedGraph)->data.endX >= ((arrowNode)selectedGraph)->data.startX)
-				((arrowNode)selectedGraph)->data.endX += scaleUnit;
+			if (width != 0)
+			{
+				if (((arrowNode)selectedGraph)->data.endX >= ((arrowNode)selectedGraph)->data.startX)
+					((arrowNode)selectedGraph)->data.endX += scaleUnit;
+				else
+					((arrowNode)selectedGraph)->data.endX -= scaleUnit;
+				if (((arrowNode)selectedGraph)->data.endY >= ((arrowNode)selectedGraph)->data.startY)
+					((arrowNode)selectedGraph)->data.endY += scaleUnit / width * height;
+				else
+					((arrowNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+			}
 			else
-				((arrowNode)selectedGraph)->data.endX -= scaleUnit;
-			if (((arrowNode)selectedGraph)->data.endY >= ((arrowNode)selectedGraph)->data.startY)
-				((arrowNode)selectedGraph)->data.endY += scaleUnit / width * height;
-			else
-				((arrowNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+			{
+				if (((arrowNode)selectedGraph)->data.endY >= ((arrowNode)selectedGraph)->data.startY)
+					((arrowNode)selectedGraph)->data.endY += scaleUnit;
+				else
+					((arrowNode)selectedGraph)->data.endY -= scaleUnit;
+			}
 			break;
 		case 双向箭头:
 			width = fabs(((dArrowNode)selectedGraph)->data.endX - ((dArrowNode)selectedGraph)->data.startX);
 			height = fabs(((dArrowNode)selectedGraph)->data.endY - ((dArrowNode)selectedGraph)->data.startY);
-			if (((dArrowNode)selectedGraph)->data.endX >= ((dArrowNode)selectedGraph)->data.startX)
-				((dArrowNode)selectedGraph)->data.endX += scaleUnit;
+			if (width != 0)
+			{
+				if (((dArrowNode)selectedGraph)->data.endX >= ((dArrowNode)selectedGraph)->data.startX)
+					((dArrowNode)selectedGraph)->data.endX += scaleUnit;
+				else
+					((dArrowNode)selectedGraph)->data.endX -= scaleUnit;
+				if (((dArrowNode)selectedGraph)->data.endY >= ((dArrowNode)selectedGraph)->data.startY)
+					((dArrowNode)selectedGraph)->data.endY += scaleUnit / width * height;
+				else
+					((dArrowNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+			}
 			else
-				((dArrowNode)selectedGraph)->data.endX -= scaleUnit;
-			if (((dArrowNode)selectedGraph)->data.endY >= ((dArrowNode)selectedGraph)->data.startY)
-				((dArrowNode)selectedGraph)->data.endY += scaleUnit / width * height;
-			else
-				((dArrowNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+			{
+				if (((dArrowNode)selectedGraph)->data.endY >= ((dArrowNode)selectedGraph)->data.startY)
+					((dArrowNode)selectedGraph)->data.endY += scaleUnit;
+				else
+					((dArrowNode)selectedGraph)->data.endY -= scaleUnit;
+			}
 			break;
 		case 平行四边形:
 			width = fabs(((paraNode)selectedGraph)->data.endX - ((paraNode)selectedGraph)->data.startX);
@@ -514,38 +565,68 @@ void reduceGraphicSize(void)
 		case 直线:
 			width = fabs(((lineNode)selectedGraph)->data.endX - ((lineNode)selectedGraph)->data.startX);
 			height = fabs(((lineNode)selectedGraph)->data.endY - ((lineNode)selectedGraph)->data.startY);
-			if (((lineNode)selectedGraph)->data.endX >= ((lineNode)selectedGraph)->data.startX)
-				((lineNode)selectedGraph)->data.endX -= scaleUnit;
+			if (width != 0)
+			{
+				if (((lineNode)selectedGraph)->data.endX >= ((lineNode)selectedGraph)->data.startX)
+					((lineNode)selectedGraph)->data.endX -= scaleUnit;
+				else
+					((lineNode)selectedGraph)->data.endX += scaleUnit;
+				if (((lineNode)selectedGraph)->data.endY >= ((lineNode)selectedGraph)->data.startY)
+					((lineNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+				else
+					((lineNode)selectedGraph)->data.endY += scaleUnit / width * height;
+			}
 			else
-				((lineNode)selectedGraph)->data.endX += scaleUnit;
-			if (((lineNode)selectedGraph)->data.endY >= ((lineNode)selectedGraph)->data.startY)
-				((lineNode)selectedGraph)->data.endY -= scaleUnit / width * height;
-			else
-				((lineNode)selectedGraph)->data.endY += scaleUnit / width * height;
+			{
+				if (((lineNode)selectedGraph)->data.endY >= ((lineNode)selectedGraph)->data.startY)
+					((lineNode)selectedGraph)->data.endY -= scaleUnit;
+				else
+					((lineNode)selectedGraph)->data.endY += scaleUnit;
+			}
 			break;
 		case 单向箭头:
 			width = fabs(((arrowNode)selectedGraph)->data.endX - ((arrowNode)selectedGraph)->data.startX);
 			height = fabs(((arrowNode)selectedGraph)->data.endY - ((arrowNode)selectedGraph)->data.startY);
-			if (((arrowNode)selectedGraph)->data.endX >= ((arrowNode)selectedGraph)->data.startX)
-				((arrowNode)selectedGraph)->data.endX -= scaleUnit;
+			if (width != 0)
+			{
+				if (((arrowNode)selectedGraph)->data.endX >= ((arrowNode)selectedGraph)->data.startX)
+					((arrowNode)selectedGraph)->data.endX -= scaleUnit;
+				else
+					((arrowNode)selectedGraph)->data.endX += scaleUnit;
+				if (((arrowNode)selectedGraph)->data.endY >= ((arrowNode)selectedGraph)->data.startY)
+					((arrowNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+				else
+					((arrowNode)selectedGraph)->data.endY += scaleUnit / width * height;
+			}
 			else
-				((arrowNode)selectedGraph)->data.endX += scaleUnit;
-			if (((arrowNode)selectedGraph)->data.endY >= ((arrowNode)selectedGraph)->data.startY)
-				((arrowNode)selectedGraph)->data.endY -= scaleUnit / width * height;
-			else
-				((arrowNode)selectedGraph)->data.endY += scaleUnit / width * height;
+			{
+				if (((arrowNode)selectedGraph)->data.endY >= ((arrowNode)selectedGraph)->data.startY)
+					((arrowNode)selectedGraph)->data.endY -= scaleUnit;
+				else
+					((arrowNode)selectedGraph)->data.endY += scaleUnit;
+			}
 			break;
 		case 双向箭头:
 			width = fabs(((dArrowNode)selectedGraph)->data.endX - ((dArrowNode)selectedGraph)->data.startX);
 			height = fabs(((dArrowNode)selectedGraph)->data.endY - ((dArrowNode)selectedGraph)->data.startY);
-			if (((dArrowNode)selectedGraph)->data.endX >= ((dArrowNode)selectedGraph)->data.startX)
-				((dArrowNode)selectedGraph)->data.endX -= scaleUnit;
+			if (width != 0)
+			{
+				if (((dArrowNode)selectedGraph)->data.endX >= ((dArrowNode)selectedGraph)->data.startX)
+					((dArrowNode)selectedGraph)->data.endX -= scaleUnit;
+				else
+					((dArrowNode)selectedGraph)->data.endX += scaleUnit;
+				if (((dArrowNode)selectedGraph)->data.endY >= ((dArrowNode)selectedGraph)->data.startY)
+					((dArrowNode)selectedGraph)->data.endY -= scaleUnit / width * height;
+				else
+					((dArrowNode)selectedGraph)->data.endY += scaleUnit / width * height;
+			}
 			else
-				((dArrowNode)selectedGraph)->data.endX += scaleUnit;
-			if (((dArrowNode)selectedGraph)->data.endY >= ((dArrowNode)selectedGraph)->data.startY)
-				((dArrowNode)selectedGraph)->data.endY -= scaleUnit / width * height;
-			else
-				((dArrowNode)selectedGraph)->data.endY += scaleUnit / width * height;
+			{
+				if (((dArrowNode)selectedGraph)->data.endY >= ((dArrowNode)selectedGraph)->data.startY)
+					((dArrowNode)selectedGraph)->data.endY -= scaleUnit;
+				else
+					((dArrowNode)selectedGraph)->data.endY += scaleUnit;
+			}
 			break;
 		case 平行四边形:
 			width = fabs(((paraNode)selectedGraph)->data.endX - ((paraNode)selectedGraph)->data.startX);

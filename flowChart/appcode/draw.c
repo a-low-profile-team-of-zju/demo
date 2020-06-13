@@ -21,6 +21,10 @@
 
 #include "draw.h"
 #include "UI.h"
+#include "operation.h"
+
+double selectedDx = 0.2; /*选中框的左上角偏移量*/
+double selectedDy = 0.2;
 
 /*--------------------------------------------------------------------------------------矩形绘制部分--------------------------------------------------------------------------------------*/
 /*初始化一个矩形链表节点并插入链表头部*/
@@ -54,8 +58,25 @@ void drawRec(rectangleNode recHead)
 {
 	rectangleNode tmp;
 	tmp = recHead;
+
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = tmp->data.endX - tmp->data.startX;
+			double h = tmp->data.endY - tmp->data.startY;
+			StartFilledRegion(0.5);
+			MovePen(w >= 0 ? tmp->data.startX - selectedDx : tmp->data.startX + selectedDx, h >= 0 ? tmp->data.startY - selectedDy : tmp->data.startY + selectedDy);
+			DrawLine(w >= 0 ? w + 2 * selectedDx : w - 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? h + 2 * selectedDy : h - 2 * selectedDy);
+			DrawLine(w >= 0 ? -w - 2 * selectedDx : -w + 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? -h - 2 * selectedDy : -h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		SetPenSize(tmp->data.penSize);
 		SetPenColor(tmp->data.fillColor);
 		if (tmp->data.fillFlag) StartFilledRegion(1);
@@ -116,6 +137,22 @@ void drawRoundedRec(rRectangleNode roundedRecHead)
 	tmp = roundedRecHead;
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = tmp->data.endX - tmp->data.startX;
+			double h = tmp->data.endY - tmp->data.startY;
+			StartFilledRegion(0.5);
+			MovePen(w >= 0 ? tmp->data.startX - selectedDx : tmp->data.startX + selectedDx, h >= 0 ? tmp->data.startY - selectedDy : tmp->data.startY + selectedDy);
+			DrawLine(w >= 0 ? w + 2 * selectedDx : w - 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? h + 2 * selectedDy : h - 2 * selectedDy);
+			DrawLine(w >= 0 ? -w - 2 * selectedDx : -w + 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? -h - 2 * selectedDy : -h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		SetPenSize(tmp->data.penSize);
 		SetPenColor(tmp->data.fillColor);
 		double width = tmp->data.endX - tmp->data.startX;
@@ -210,6 +247,22 @@ void drawDiam(diamNode diamondHead)
 	tmp = diamondHead;
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = tmp->data.endX - tmp->data.startX;
+			double h = tmp->data.endY - tmp->data.startY;
+			StartFilledRegion(0.5);
+			MovePen(w >= 0 ? tmp->data.startX - selectedDx : tmp->data.startX + selectedDx, h >= 0 ? tmp->data.startY - selectedDy : tmp->data.startY + selectedDy);
+			DrawLine(w >= 0 ? w + 2 * selectedDx : w - 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? h + 2 * selectedDy : h - 2 * selectedDy);
+			DrawLine(w >= 0 ? -w - 2 * selectedDx : -w + 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? -h - 2 * selectedDy : -h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		SetPenSize(tmp->data.penSize);
 		SetPenColor(tmp->data.fillColor);
 		if (tmp->data.fillFlag) StartFilledRegion(1);
@@ -268,6 +321,22 @@ void drawLine(lineNode lineHead)
 	tmp = lineHead;
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = tmp->data.endX - tmp->data.startX;
+			double h = tmp->data.endY - tmp->data.startY;
+			StartFilledRegion(0.5);
+			MovePen(w >= 0 ? tmp->data.startX - selectedDx : tmp->data.startX + selectedDx, h >= 0 ? tmp->data.startY - selectedDy : tmp->data.startY + selectedDy);
+			DrawLine(w >= 0 ? w + 2 * selectedDx : w - 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? h + 2 * selectedDy : h - 2 * selectedDy);
+			DrawLine(w >= 0 ? -w - 2 * selectedDx : -w + 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? -h - 2 * selectedDy : -h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		SetPenSize(tmp->data.penSize);
 		SetPenColor(tmp->data.fillColor);
 		/*画边框*/
@@ -313,6 +382,22 @@ void drawArrow(arrowNode arrowHead)
 	
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = tmp->data.endX - tmp->data.startX;
+			double h = tmp->data.endY - tmp->data.startY;
+			StartFilledRegion(0.5);
+			MovePen(w >= 0 ? tmp->data.startX - selectedDx : tmp->data.startX + selectedDx, h >= 0 ? tmp->data.startY - selectedDy : tmp->data.startY + selectedDy);
+			DrawLine(w >= 0 ? w + 2 * selectedDx : w - 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? h + 2 * selectedDy : h - 2 * selectedDy);
+			DrawLine(w >= 0 ? -w - 2 * selectedDx : -w + 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? -h - 2 * selectedDy : -h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		double width = tmp->data.endX - tmp->data.startX;
 		double height = tmp->data.endY - tmp->data.startY;
 		double length = sqrt(width * width + height * height);
@@ -370,6 +455,22 @@ void drawdArrow(dArrowNode dArrowHead)
 
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = tmp->data.endX - tmp->data.startX;
+			double h = tmp->data.endY - tmp->data.startY;
+			StartFilledRegion(0.5);
+			MovePen(w >= 0 ? tmp->data.startX - selectedDx : tmp->data.startX + selectedDx, h >= 0 ? tmp->data.startY - selectedDy : tmp->data.startY + selectedDy);
+			DrawLine(w >= 0 ? w + 2 * selectedDx : w - 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? h + 2 * selectedDy : h - 2 * selectedDy);
+			DrawLine(w >= 0 ? -w - 2 * selectedDx : -w + 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? -h - 2 * selectedDy : -h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		double width = tmp->data.endX - tmp->data.startX;
 		double height = tmp->data.endY - tmp->data.startY;
 		double length = sqrt(width * width + height * height);
@@ -433,6 +534,22 @@ void drawPara(paraNode paraHead)
 	tmp = paraHead;
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = tmp->data.endX - tmp->data.startX;
+			double h = tmp->data.endY - tmp->data.startY;
+			StartFilledRegion(0.5);
+			MovePen(w >= 0 ? tmp->data.startX - selectedDx : tmp->data.startX + selectedDx, h >= 0 ? tmp->data.startY - selectedDy: tmp->data.startY + selectedDy);
+			DrawLine(w >= 0 ? w + 2 * selectedDx : w - 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? h + 2 * selectedDy : h - 2 * selectedDy);
+			DrawLine(w >= 0 ? -w - 2 * selectedDx : -w + 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? -h - 2 * selectedDy : -h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		SetPenSize(tmp->data.penSize);
 		SetPenColor(tmp->data.fillColor);
 		if (tmp->data.fillFlag) StartFilledRegion(1);
@@ -492,6 +609,22 @@ void drawCircle(circleNode circleHead)
 	tmp = circleHead;
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = 2 * (tmp->data.radius);
+			double h = 2 * (tmp->data.radius);
+			StartFilledRegion(0.5);
+			MovePen(tmp->data.startX - w / 2 - selectedDx, tmp->data.startY + w / 2 + selectedDy);
+			DrawLine(w + 2 * selectedDx, 0);
+			DrawLine(0, -(h + 2 * selectedDy));
+			DrawLine(-w - 2 * selectedDx, 0);
+			DrawLine(0, h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		SetPenSize(tmp->data.penSize);
 		SetPenColor(tmp->data.fillColor);
 		if (tmp->data.fillFlag) StartFilledRegion(1);
@@ -548,6 +681,23 @@ void drawOval(ovalNode ovalHead)
 	tmp = ovalHead;
 	while (tmp != NULL)
 	{
+		if (tmp == selectedGraph)
+		{
+			SetPenSize(1);
+			DefineColor("Light Blue", .0, .47, .84);
+			SetPenColor("Light Blue");
+			double w = 2 * (tmp->data.xRadius);
+			double h = 2 * (tmp->data.yRadius);
+			StartFilledRegion(0.5);
+			MovePen(w >= 0 ? tmp->data.startX - w / 2 - selectedDx : tmp->data.startX - w / 2 + selectedDx,
+				h >= 0 ? tmp->data.startY - h / 2 - selectedDy : tmp->data.startY - h / 2 + selectedDy);
+			DrawLine(w >= 0 ? w + 2 * selectedDx : w - 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? h + 2 * selectedDy : h - 2 * selectedDy);
+			DrawLine(w >= 0 ? -w - 2 * selectedDx : -w + 2 * selectedDx, 0);
+			DrawLine(0, h >= 0 ? -h - 2 * selectedDy : -h + 2 * selectedDy);
+			EndFilledRegion();
+		}
+
 		SetPenSize(tmp->data.penSize);
 		SetPenColor(tmp->data.fillColor);
 		if (tmp->data.fillFlag) StartFilledRegion(1);

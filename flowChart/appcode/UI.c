@@ -56,9 +56,9 @@ void initMenu(void)
 		"Line",
 		"Arrow" ,
 		"DoubleheadedArrow",
-		"parallelogram",
-		"circle",
-		"oval"
+		"Parallelogram",
+		"Circle",
+		"Oval"
 	};
 	static char* menuListHelp[] = { "Help",
 		"About us",
@@ -185,7 +185,7 @@ void initMenu(void)
 	drawMenuBar(0, winHeight - menuHeight, winWidth, menuHeight);
 
 	/*File菜单*/
-	selection = menuList(GenUIID(0), 0 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListFile[2]) * 1.5, menuHeight, lang ? menuListFile : menuListCFile, sizeof(menuListFile) / sizeof(menuListFile[0]));
+	selection = menuList(GenUIID(0), 0 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListFile[2]) * 1.5, menuHeight, !lang ? menuListFile : menuListCFile, sizeof(menuListFile) / sizeof(menuListFile[0]));
 	if (selection == 1)
 	{
 		/*保存后，统统初始化！*/
@@ -204,36 +204,38 @@ void initMenu(void)
 		ShExecInfo.nShow = SW_NORMAL;
 		ShExecInfo.hInstApp = NULL;
 		ShellExecuteEx(&ShExecInfo);
+		
 		//关闭自身
 		exit(0);
 	}
 	else if (selection == 2)
 	{
 		open();
-		display();
+		
 	}
 	else if (selection == 3)
 	{
 		isSaveAs = FALSE;
 		save();
-		display();
+		
 	}
 	else if (selection == 4)
 	{
 		isSaveAs = TRUE;
 		save();
-		display();
+		
 	}
 	else if (selection == 5)
 	{
-		if (MessageBox(NULL, lang ? "Need save the file?" : "需要保存当前文件吗？", 
-			lang ? "Attention" : "注意", MB_YESNO | MB_ICONQUESTION) == IDYES)/*调用了系统api，生成一个对话框*/
+		if (MessageBox(NULL, !lang ? "Need save the file?" : "需要保存当前文件吗？", 
+			!lang ? "Attention" : "注意", MB_YESNO | MB_ICONQUESTION) == IDYES)/*调用了系统api，生成一个对话框*/
 		{
 			isSaveAs = TRUE;
 			save();		
 		}
 		else
 			exit(0);
+		
 	}
 	else if (selection == 6)
 	{
@@ -241,83 +243,84 @@ void initMenu(void)
 	}
 
 	/*Edit菜单*/
-	selection = menuList(GenUIID(0), 1 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListEdit[7]) * 1.5, menuHeight, lang ? menuListEdit : menuListCEdit, sizeof(menuListEdit) / sizeof(menuListEdit[0]));
+	selection = menuList(GenUIID(0), 1 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListEdit[7]) * 1.5, menuHeight, !lang ? menuListEdit : menuListCEdit, sizeof(menuListEdit) / sizeof(menuListEdit[0]));
 	if (selection == 1)
 	{
 		cut();
-		display();
+		
 	}
 	else if (selection == 2)
 	{
 		copy();
-		display();
+		
 	}
 	else if (selection == 3)
 	{
 		paste();
-		display();
+		
 	}
 	else if (selection == 4)
 	{
 		del();
-		display();
+		
 	}
 	else if (selection == 5)
 	{
 		enlargeGraphicSize();
-		display();/*如果不及时刷新Edit菜单栏就会消失*/
+		
 	}
 	else if (selection == 6)
 	{
 		reduceGraphicSize();
-		display();
+		
 	}
 	else if (selection == 7)
 	{
 		fill();
-		display();
+		
 	}
 
 	/*Draw菜单*/
-	selection = menuList(GenUIID(0), 2 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListDraw[6]) * 1.5, menuHeight, lang ? menuListDraw : menuListCDraw, sizeof(menuListDraw) / sizeof(menuListDraw[0]));
+	selection = menuList(GenUIID(0), 2 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListDraw[6]) * 1.5, menuHeight, !lang ? menuListDraw : menuListCDraw, sizeof(menuListDraw) / sizeof(menuListDraw[0]));
 	if (selection)
 	{
 		operation = draw;
 		type = selection;
+		
 	}
 
 	/*Fill Colors菜单*/
-	selection = menuList(GenUIID(0), 3 * defaultMenuWidth, winHeight - menuHeight, 1.5 * defaultMenuWidth, TextStringWidth(menuListFillColors[1]) * 2, menuHeight, lang ? menuListFillColors : menuListCFillColors, sizeof(menuListFillColors) / sizeof(menuListFillColors[0]));
+	selection = menuList(GenUIID(0), 3 * defaultMenuWidth, winHeight - menuHeight, 1.5 * defaultMenuWidth, TextStringWidth(menuListFillColors[1]) * 2, menuHeight, !lang ? menuListFillColors : menuListCFillColors, sizeof(menuListFillColors) / sizeof(menuListFillColors[0]));
 	if (selection)
 	{
 	//if (operation == selected)/*不要加这个*/
 	//{
 	changeFillColor(selection - 1);
-	display();
+	
 	//}
 	}
 
 	/*Font Colors菜单*/
-	selection = menuList(GenUIID(0), 4.5 * defaultMenuWidth, winHeight - menuHeight, 1.5 * defaultMenuWidth, TextStringWidth(menuListFillColors[1]) * 2, menuHeight,lang ?  menuListFontColors : menuListCFontColors, sizeof(menuListFontColors) / sizeof(menuListFontColors[0]));
+	selection = menuList(GenUIID(0), 4.5 * defaultMenuWidth, winHeight - menuHeight, 1.5 * defaultMenuWidth, TextStringWidth(menuListFillColors[1]) * 2, menuHeight,!lang ?  menuListFontColors : menuListCFontColors, sizeof(menuListFontColors) / sizeof(menuListFontColors[0]));
 	if (selection)
 	{
 		//if (operation == selected)
 		//{
 		changeTextColor(selection - 1);
-		display();
+		
 		//}
 	}
 
 	/*Pen Size菜单*/
-	selection = menuList(GenUIID(0), 6 * defaultMenuWidth, winHeight - menuHeight, 1.5 * defaultMenuWidth, TextStringWidth(menuListFillColors[1]) * 2, menuHeight, lang ? menuListPenSize : menuListCPenSize, sizeof(menuListPenSize) / sizeof(menuListPenSize[0]));
+	selection = menuList(GenUIID(0), 6 * defaultMenuWidth, winHeight - menuHeight, 1.5 * defaultMenuWidth, TextStringWidth(menuListFillColors[1]) * 2, menuHeight, !lang ? menuListPenSize : menuListCPenSize, sizeof(menuListPenSize) / sizeof(menuListPenSize[0]));
 	if (selection)
 	{
 		changePenSize(selection);
-		display();
+		
 	}
 
 	/*Help菜单*/
-	selection = menuList(GenUIID(0), 7.5 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListHelp[3]) * 2, menuHeight, lang ? menuListHelp : menuListCHelp, sizeof(menuListHelp) / sizeof(menuListHelp[0]));
+	selection = menuList(GenUIID(0), 7.5 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListHelp[3]) * 2, menuHeight, !lang ? menuListHelp : menuListCHelp, sizeof(menuListHelp) / sizeof(menuListHelp[0]));
 	if (selection == 1)
 	{
 		/*"About us"的功能*/
@@ -325,6 +328,7 @@ void initMenu(void)
 	else if (selection == 2)
 	{
 		ShellExecute(NULL, "open", "https://github.com/a-low-profile-team-of-zju/demo", NULL, NULL, SW_HIDE);/*导向我们的GitHub项目页*/
+		
 	}
 	else if (selection == 3)
 	{
@@ -341,21 +345,21 @@ void initButtomBar(void)
 	char status[10];
 	double fontHeight = GetFontHeight();/*获取文本高度*/
 	double barHeight = 1.5 * fontHeight;
-	double statusWidth = 3;
+	double statusWidth = 11.25*GetFontHeight();
 
 	switch (operation)
 	{
 	case none:
-		strcpy(status, lang ? "None" : "无操作");
+		strcpy(status, !lang ? "None" : "无操作");
 		break;
 	case draw:
-		strcpy(status, lang ? "Drawing" : "绘图中");
+		strcpy(status, !lang ? "Drawing" : "绘图中");
 		break;
 	case selected:
 		if (moveFlag)
-			strcpy(status, lang ? "Moving" : "移动中");
+			strcpy(status, !lang ? "Moving" : "移动中");
 		else
-			strcpy(status, lang ? "Selecting" : "选中");
+			strcpy(status, !lang ? "Selecting" : "选中");
 		break;
 	}
 	/*画一个menuBar作为背景*/
@@ -366,7 +370,7 @@ void initButtomBar(void)
 	drawLabel((statusWidth - TextStringWidth(status)) / 2, (barHeight-fontHeight)/2, status);
 	
 	setTextBoxColors("Gray", "Black", "Gray", "Black", 1);
-	if (textbox(GenUIID(0), statusWidth, 0, winWidth-3, barHeight, tmpText, 101)) 
+	if (textbox(GenUIID(0), statusWidth, 0, winWidth-statusWidth, barHeight, tmpText, 101)) 
 	{
 		if (selectedGraph != NULL)
 		{
@@ -398,6 +402,174 @@ void initButtomBar(void)
 				break;
 			}
 		}
-		display();
+		//
 	}
+}
+
+/*初始化button*/
+void initButton(void)
+{
+	double line = 0.01;/*画笔粗细为1时的线粗*/
+	double fontHeight = GetFontHeight();/*获取文本高度*/
+	double menuHeight = 1.5 * fontHeight;/*需要借用menu的高度来确定button的位置*/
+	double buttonWidth, buttonHeight;
+	buttonHeight = 1.5 * menuHeight;/*定义button高为menu高的1.5倍*/
+	buttonWidth = 5 * buttonHeight;/*定义button宽为高的5倍*/
+	SetPenSize(1);
+	setButtonColors("Light Gray", "Black", "Gray", "Black", 1);
+
+	setMenuColors("Light Gray", "White", "Black", "White", 1);
+	drawMenuBar(0, menuHeight, buttonWidth, winHeight - 2 * menuHeight);
+
+	//drawBox(0, winHeight - 2 * menuHeight, buttonWidth, menuHeight, 1, "绘图工具栏", 'C', "White");
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 1 * buttonHeight, buttonWidth, buttonHeight, !lang ? "Rectangle" : "矩形"))
+	{
+		operation = draw;
+		type = 矩形;
+	}
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 2 * buttonHeight, buttonWidth, buttonHeight, !lang ? "RoundedRec" : "圆角矩形"))
+	{
+		operation = draw;
+		type = 圆角矩形;
+	}
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 3 * buttonHeight, buttonWidth, buttonHeight, !lang ? "Diamond" : "菱形"))
+	{
+		operation = draw;
+		type = 菱形;
+	}
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 4 * buttonHeight, buttonWidth, buttonHeight, !lang ? "Line" : "直线"))
+	{
+		operation = draw;
+		type = 直线;
+	}
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 5 * buttonHeight, buttonWidth, buttonHeight, !lang ? "Arrow" : "单向箭头"))
+	{
+		operation = draw;
+		type = 单向箭头;
+	}
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 6 * buttonHeight, buttonWidth, buttonHeight, !lang ? "DoubleheadedArrow" : "双向箭头"))
+	{
+		operation = draw;
+		type = 双向箭头;
+	}
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 7 * buttonHeight, buttonWidth, buttonHeight, !lang ? "Parallelogram" : "平行四边形"))
+	{
+		operation = draw;
+		type = 平行四边形;
+	}
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 8 * buttonHeight, buttonWidth, buttonHeight, !lang ? "Circle" : "圆形"))
+	{
+		operation = draw;
+		type = 圆形;
+	}
+	if (button(GenUIID(0), 0, winHeight - 2 * menuHeight - 9 * buttonHeight, buttonWidth, buttonHeight, !lang ? "Oval" : "椭圆形"))
+	{
+		operation = draw;
+		type = 椭圆形;
+	}
+
+	//drawBox(0, winHeight - 3 * menuHeight - 9 * buttonHeight, buttonWidth, menuHeight, 1, "编辑工具栏", 'C', "White");
+	if (button(GenUIID(0), 0, winHeight - 3 * menuHeight - 10 * buttonHeight, buttonWidth / 2, buttonHeight, !lang ? "Cut" : "剪切"))
+	{
+		cut();
+		//display();
+	}
+	if (button(GenUIID(0), buttonWidth / 2, winHeight - 3 * menuHeight - 10 * buttonHeight, buttonWidth / 2, buttonHeight, !lang ? "Copy" : "复制"))
+	{
+		copy();
+		//display();
+	}
+	if (button(GenUIID(0), 0, winHeight - 3 * menuHeight - 11 * buttonHeight, buttonWidth / 2, buttonHeight, !lang ? "Paste" : "粘贴"))
+	{
+		paste();
+		//display();
+	}
+	if (button(GenUIID(0), buttonWidth / 2, winHeight - 3 * menuHeight - 11 * buttonHeight, buttonWidth / 2, buttonHeight, !lang ? "Delete" : "删除"))
+	{
+		del();
+		//display();
+	}
+	drawBox(0, winHeight - 3 * menuHeight - 9 * buttonHeight, buttonWidth, menuHeight, 1, "编辑工具栏", 'C', "White");
+	
+	//drawBox(0, winHeight - 4 * menuHeight - 11 * buttonHeight, buttonWidth, menuHeight, 1, "颜色工具栏", 'C', "White");
+	if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 12 * buttonHeight, buttonWidth / 2, buttonHeight, !lang ? "Fill Color" : "填充颜色"))
+	{
+		choose = 0;
+	}
+	if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 12 * buttonHeight, buttonWidth / 2, buttonHeight, !lang ? "Text Color" : "文本颜色"))
+	{
+		choose = 1;
+	}
+	switch (choose)
+	{
+	case 0:
+		setButtonColors("Black", "Black", "Black", "Black", 1);
+		if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 13 * buttonHeight - line, buttonWidth / 4, buttonHeight,""))changeFillColor(0);
+		setButtonColors("Dark Gray", "Dark Gray", "Dark Gray", "Dark Gray", 1);
+		if (button(GenUIID(0), buttonWidth / 4, winHeight - 4 * menuHeight - 13 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(1);
+		setButtonColors("Gray", "Gray", "Gray", "Gray", 1);
+		if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 13 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(2);
+		setButtonColors("Light Gray", "Light Gray", "Light Gray", "Light Gray", 1);
+		if (button(GenUIID(0), buttonWidth * 3 / 4, winHeight - 4 * menuHeight - 13 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(3);
+		setButtonColors("White", "White", "White", "White", 1);
+		if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 14 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(4);
+		setButtonColors("Brown", "Brown", "Brown", "Brown", 1);
+		if (button(GenUIID(0), buttonWidth / 4, winHeight - 4 * menuHeight - 14 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(5);
+		setButtonColors("Red", "Red", "Red", "Red", 1);
+		if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 14 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(6);
+		setButtonColors("Orange", "Orange", "Orange", "Orange", 1);
+		if (button(GenUIID(0), buttonWidth * 3 / 4, winHeight - 4 * menuHeight - 14 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(7);
+		setButtonColors("Yellow", "Yellow", "Yellow", "Yellow", 1);
+		if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 15 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(8);
+		setButtonColors("Green", "Green", "Green", "Green", 1);
+		if (button(GenUIID(0), buttonWidth / 4, winHeight - 4 * menuHeight - 15 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(9);
+		setButtonColors("Blue", "Blue", "Blue", "Blue", 1);
+		if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 15 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(10);
+		setButtonColors("Violet", "Violet", "Violet", "Violet", 1);
+		if (button(GenUIID(0), buttonWidth * 3 / 4, winHeight - 4 * menuHeight - 15 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeFillColor(11);
+		setButtonColors("Magenta", "Magenta", "Magenta", "Magenta", 1);
+		if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 16 * buttonHeight - line, buttonWidth / 2, buttonHeight, ""))changeFillColor(12);
+		setButtonColors("Cyan", "Cyan", "Cyan", "Cyan", 1);
+		if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 16 * buttonHeight - line, buttonWidth / 2, buttonHeight, ""))changeFillColor(13);
+		break;
+	case 1:
+		setButtonColors("Black", "Black", "Black", "Black", 1);
+		if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 13 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(0);
+		setButtonColors("Dark Gray", "Dark Gray", "Dark Gray", "Dark Gray", 1);
+		if (button(GenUIID(0), buttonWidth / 4, winHeight - 4 * menuHeight - 13 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(1);
+		setButtonColors("Gray", "Gray", "Gray", "Gray", 1);
+		if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 13 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(2);
+		setButtonColors("Light Gray", "Light Gray", "Light Gray", "Light Gray", 1);
+		if (button(GenUIID(0), buttonWidth * 3 / 4, winHeight - 4 * menuHeight - 13 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(3);
+		setButtonColors("White", "White", "White", "White", 1);
+		if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 14 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(4);
+		setButtonColors("Brown", "Brown", "Brown", "Brown", 1);
+		if (button(GenUIID(0), buttonWidth / 4, winHeight - 4 * menuHeight - 14 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(5);
+		setButtonColors("Red", "Red", "Red", "Red", 1);
+		if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 14 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(6);
+		setButtonColors("Orange", "Orange", "Orange", "Orange", 1);
+		if (button(GenUIID(0), buttonWidth * 3 / 4, winHeight - 4 * menuHeight - 14 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(7);
+		setButtonColors("Yellow", "Yellow", "Yellow", "Yellow", 1);
+		if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 15 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(8);
+		setButtonColors("Green", "Green", "Green", "Green", 1);
+		if (button(GenUIID(0), buttonWidth / 4, winHeight - 4 * menuHeight - 15 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(9);
+		setButtonColors("Blue", "Blue", "Blue", "Blue", 1);
+		if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 15 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(10);
+		setButtonColors("Violet", "Violet", "Violet", "Violet", 1);
+		if (button(GenUIID(0), buttonWidth * 3 / 4, winHeight - 4 * menuHeight - 15 * buttonHeight - line, buttonWidth / 4, buttonHeight, ""))changeTextColor(11);
+		setButtonColors("Magenta", "Magenta", "Magenta", "Magenta", 1);
+		if (button(GenUIID(0), 0, winHeight - 4 * menuHeight - 16 * buttonHeight - line, buttonWidth / 2, buttonHeight, ""))changeTextColor(12);
+		setButtonColors("Cyan", "Cyan", "Cyan", "Cyan", 1);
+		if (button(GenUIID(0), buttonWidth / 2, winHeight - 4 * menuHeight - 16 * buttonHeight - line, buttonWidth / 2, buttonHeight, ""))changeTextColor(13);
+		break;
+	}
+
+	SetPenColor("Dark Gray");
+	drawBox(0, winHeight - 2 * menuHeight, buttonWidth, menuHeight, 1, !lang ? "Draw Tool" : "绘图工具栏", 'C', "White");
+	SetPenColor("Dark Gray");
+	drawBox(0, winHeight - 3 * menuHeight - 9 * buttonHeight, buttonWidth, menuHeight, 1, !lang ? "Edit Tool" : "编辑工具栏", 'C', "White");
+	SetPenColor("Dark Gray");
+	drawBox(0, winHeight - 4 * menuHeight - 11 * buttonHeight, buttonWidth, menuHeight, 1, !lang ? "Color Tool" : "颜色工具栏", 'C', "White");
+
+	//
 }
