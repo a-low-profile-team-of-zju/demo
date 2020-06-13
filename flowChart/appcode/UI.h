@@ -6,7 +6,7 @@ static int choose;/*判断颜色改变的对象，默认判断颜色改变的对象为填充颜色*/
 double winWidth, winHeight;
 /*textBox的文本缓存*/
 char tmpText[101];
-/*判断中英文，默认中文*/
+/*判断中英文，默认英文*/
 enum language
 {
 	Chinese = 0,

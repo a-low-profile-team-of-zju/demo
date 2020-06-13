@@ -189,7 +189,15 @@ void initMenu(void)
 	if (selection == 1)
 	{
 		/*保存后，统统初始化！*/
-		save();
+		if (rectangleHead ||
+			rRectangleHead ||
+			diamondHead ||
+			lineHead ||
+			arrowHead ||
+			dArrowHead ||
+			paraHead ||
+			circleHead ||
+			ovalHead )save();
 		char lpFileName[MAX_PATH];/*代码来源https://zhidao.baidu.com/question/518459589225069325.html*/
 		GetModuleFileName(NULL, lpFileName, MAX_PATH);
 		// 运行新的自身
@@ -204,7 +212,6 @@ void initMenu(void)
 		ShExecInfo.nShow = SW_NORMAL;
 		ShExecInfo.hInstApp = NULL;
 		ShellExecuteEx(&ShExecInfo);
-		
 		//关闭自身
 		exit(0);
 	}
