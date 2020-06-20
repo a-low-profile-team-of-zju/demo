@@ -35,7 +35,7 @@ c大程大作业题目要求：**小型算法流程图绘制工具**
 
 #### 界面介绍：
 
-![2020-06-20](C:\Users\jiang\OneDrive\图片\屏幕快照\2020-06-20.png)
+![2020-06-20](https://github.com/a-low-profile-team-of-zju/demo/blob/master/image/2020-06-20.png)
 
 #### menu菜单栏：
 
