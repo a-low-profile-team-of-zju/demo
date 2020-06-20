@@ -45,8 +45,8 @@ void initMenu(void)
 		"Copy   | Ctrl-C",
 		"Paste  | Ctrl-V",
 		"Delete | Ctrl-D" ,
-		"Enlarge | Ctrl-E",
-		"Reduce | Ctrl-R",
+		"Enlarge | Roll-up",
+		"Reduce | Roll-down",
 		"Fill/Unfill | Ctrl-F"
 	};
 	static char* menuListDraw[] = { "Draw",
@@ -100,7 +100,7 @@ void initMenu(void)
 	static char* menuListPenSize[] = { "Pen Size",
 		"#1 Line",
 		"#2 Line",
-		"#3 Line",
+		"#3 Line(default)",
 		"#4 Line",
 		"#5 Line"
 	};
@@ -119,8 +119,8 @@ void initMenu(void)
 		"复制   | Ctrl-C",
 		"粘贴  | Ctrl-V",
 		"删除 | Ctrl-D" ,
-		"放大 | Ctrl-E",
-		"缩小 | Ctrl-R",
+		"放大 | 滚轮向上",
+		"缩小 | 滚轮向下",
 		"填充/不填充 | Ctrl-F"
 	};
 	static char* menuListCDraw[] = { "绘图",
@@ -174,7 +174,7 @@ void initMenu(void)
 	static char* menuListCPenSize[] = { "画笔大小",
 		"1号线条",
 		"2号线条",
-		"3号线条",
+		"3号线条(默认)",
 		"4号线条",
 		"5号线条"
 	};
@@ -330,7 +330,7 @@ void initMenu(void)
 	selection = menuList(GenUIID(0), 7.5 * defaultMenuWidth, winHeight - menuHeight, defaultMenuWidth, TextStringWidth(menuListHelp[3]) * 2, menuHeight, !lang ? menuListHelp : menuListCHelp, sizeof(menuListHelp) / sizeof(menuListHelp[0]));
 	if (selection == 1)
 	{
-		/*"About us"的功能*/
+		MessageBox(NULL, "Programmed by a-low-profile-team-of-zju", "About us", MB_OK);
 	}
 	else if (selection == 2)
 	{

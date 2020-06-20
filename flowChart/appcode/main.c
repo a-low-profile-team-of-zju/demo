@@ -45,10 +45,6 @@ void Main()
 	winWidth = GetWindowWidth();
 	winHeight = GetWindowHeight();
 
-	registerCharEvent(CharEventProcess);        /*注册字符信息*/
-	registerKeyboardEvent(KeyboardEventProcess);/*注册键盘信息*/
-	registerMouseEvent(MouseEventProcess);/*注册鼠标信息*/
-
 	initButtomBar();
 	initButton();
 	initMenu();
@@ -63,6 +59,14 @@ void Main()
 	paraHead = NULL;
 	circleHead = NULL;
 	ovalHead = NULL;
+
+	/*提示使用电池选项中的最高性能以及先看使用手册*/
+	MessageBox(NULL, "建议使用电池选项中的最佳性能来保证使用时的流畅度；使用前请先点击Help/More Info查阅使用手册，谢谢", "提示", MB_OK);/*调用了系统api，生成一个对话框*/
+	
+
+	registerCharEvent(CharEventProcess);        /*注册字符信息*/
+	registerKeyboardEvent(KeyboardEventProcess);/*注册键盘信息*/
+	registerMouseEvent(MouseEventProcess);/*注册鼠标信息*/
 }
 
 void CharEventProcess(char ch)
